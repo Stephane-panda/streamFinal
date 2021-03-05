@@ -6,3 +6,4 @@ import "components/disable-in-vr.js";
 import "components/chessboard.js";
 import "components/hexatile.js";
 import "components/navmesh-manager.js";
+import "components/dropzone.js" ; 
