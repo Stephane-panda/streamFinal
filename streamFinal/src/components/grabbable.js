@@ -48,5 +48,8 @@ AFRAME.registerComponent('grabbable', {
     this.el.object3D.position.sub(this.pos);
     // and copy rotation
     this.el.object3D.rotation.copy(this.target.object3D.rotation);
-  }
+  },
+  remove: function () {
+    this.ungrab();
+  console.log("remove")}
 });

@@ -7,3 +7,5 @@ import "components/chessboard.js";
 import "components/hexatile.js";
 import "components/navmesh-manager.js";
 import "components/dropzone.js" ; 
+import "components/sound-manager.js" ;
+import "components/disable-after-an-event.js" ;
