@@ -9,18 +9,19 @@
     <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
     <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
     <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+    <script src="https://unpkg.com/aframe-dust-component@^1.0.5/aframe-dust-component.js"></script>
     <script src="bundle.js"></script>
   </head>
   <body>
     <a-scene
       stats
-      ainspector-plugin-recast
+      inspector-plugin-recast
       background="color: #000"
       fog="type: linear; color: #000; near: 30; far: 60"
     >
       <a-assets>
-        <!-- <a-asset-item id="navmesh_spawn" src="assets/navmesh.gltf"></a-asset-item>
-        <a-asset-item id="navmesh_elevator" src="assets/navmesh_elevator.gltf"></a-asset-item> -->
+        <a-asset-item id="navmesh_spawn" src="assets/navmesh.gltf"></a-asset-item>
+        <!-- <a-asset-item id="navmesh_elevator" src="assets/navmesh_elevator.gltf"></a-asset-item> -->
         <a-asset-item id="bedroom" src="assets/Bedroom2.gltf"></a-asset-item>
         <a-asset-item id="kitchen" src="assets/kitchen.obj"></a-asset-item>
         <a-asset-item id="jail" src="assets/jail.gltf"></a-asset-item>
@@ -30,10 +31,18 @@
           response-type="arraybuffer"
           src="assets/sound/ambiant.mp3"
           preload="auto"
+
+        ></a-asset-item>
+        <a-asset-item
+          id="intro"
+          response-type="arraybuffer"
+          src="assets/sound/open.ogg"
+          preload="auto"
+
         ></a-asset-item>
       </a-assets>
-
-      <a-entity sound__ambiant="src: #ambiant ; autoplay: true"></a-entity>
+      <a-dust></a-dust>
+      
       <a-entity asound-manager></a-entity>
 
       <a-entity
@@ -62,6 +71,7 @@
           hover-highlighter
           disable-after-an-event=" delay: 100 ; component : grabbable; event : grabbed "
           event-set=" _delay: 100 ; object3D.position.y : 100; _event : grabbed "
+          
         >
         </a-entity>
       </a-entity>
@@ -91,6 +101,8 @@
           hover-highlighter
           disable-after-an-event=" delay: 100 ;  component : grabbable; event : grabbed "
           event-set=" _delay: 100 ; object3D.position.y : 100; _event : grabbed "
+          
+          
         >
         </a-entity>
       </a-entity>
@@ -125,11 +137,13 @@
           grabbable="target : #right-hand"
           hover-highlighter
           disable-after-an-event=" delay: 100 ; component : grabbable; event : grabbed "
-        >
+          ></a-entity>
+        
         </a-entity>
-      </a-entity>
-
-      <a-entity
+      
+      <a-entity id="spawn" >
+        <a-plane position="0 -1 -103" height="20" width="20" color="#CCC" rotation="-90 0 0" visible ="false"></a-plane>
+        <a-entity
         id="book-entity0"
         position="0 1 -103"
         gltf-model="#book"
@@ -139,8 +153,18 @@
         hover-highlighter
         disable-after-an-event=" delay: 100 ; component : grabbable; event : grabbed "
         event-set=" _delay: 500 ; object3D.position.y : 100; _event : grabbed "
-      >
+        ></a-entity>
+
+        <a-entity
+        light="type: point; intensity: 0.1;"
+        animation="property: light.intensity ; to: 0.5 ; dur: 2000; easing: easeInOutSine; loop: true;"
+        position="0 2 -103"
+      ></a-entity>
+      
       </a-entity>
+
+
+       <!-- <a-entity nav-mesh id="nav-mesh-spawn" gltf-model="#navmesh_spawn" visible="true" position= "0 0.5 0"></a-entity> -->
       <!-- <a-entity id="navmesh-manager" navmesh-manager="navmesh: #nav-mesh-spawn"
         event-set="_event: elevator; navmesh-manager.navmesh: #nav-mesh-elevator"
         listen-to="target: #btn-platform-1; event: click; emit: elevator"
@@ -148,8 +172,8 @@
         listen-to__final="target: #platform-1; event: animationcomplete; emit: final"
       > -->
 
-      <!-- </a-entity> -->
-      <!-- <a-entity nav-mesh id="nav-mesh-spawn" gltf-model="#navmesh_spawn" visible="false"></a-entity>
+      </a-entity> 
+      <!-- 
       <a-entity nav-mesh-disable position="0 0.2 0" id="nav-mesh-elevator" gltf-model="#navmesh_elevator" visible="false"></a-entity>
       <a-entity nav-mesh-disable position="0 11 0" id="nav-mesh-final" gltf-model="#navmesh_spawn" visible="false"></a-entity> -->
 
@@ -175,14 +199,24 @@
         movement-controls="constrainToNavMesh: true;"
         position="0 0 -100 "
         listen-to__lv0="target: #book-entity0; event: grabbed; emit: go"
+        sound="src: assets/sound/secret.wav; on: go"
+        sound__sto="src: url(assets/sound/bed.ogg); on: go; volume : 4"
         event-set__lv0=" _delay : 500 ; _event: go; position : -10 0 1 ;"
         listen-to__lv1="target: #book-entity; event: grabbed; emit: grabbed"
+        sound__sec="src: url(assets/sound/secret.wav); on: grabbed"
+          sound__sto2="src: url(assets/sound/prison.ogg); on: grabbed ; volume : 4"
         event-set__lv1="_event: grabbed; position : 13 0 4.5 ; _delay : 500"
         listen-to__lv2="target: #book-entity3; event: grabbed; emit: grabbed2"
+        sound__sec="src: url(assets/sound/secret.wav); on: grabbed2"
+          sound__sto3="src: url(assets/sound/frigo.ogg); on: grabbed2 ;volume : 4"
         event-set__lv2="_event: grabbed2; position :  1 0 -1 ; _delay : 500"
         listen-to__lv3="target: #book-entity2; event: grabbed; emit: grabbed3"
+        sound__sec="src: url(assets/sound/secret.wav); on: grabbed3"
+        sound__sto4="src: url(assets/sound/end.ogg); on: grabbed3 ;volume : 4"
         event-set__lv3="_event: grabbed3; position :  0 0 -100 ; _delay : 500"
         animation="delay : 1000 ; property: object3D.position.y; to: 10; dur: 5000; easing: linear; startEvents: up"
+        sound__ambiant="src: #ambiant ; autoplay: true; loop : true ; volume : 0.5 ;"
+        sound__intro="src: #intro ; autoplay: true; volume : 4"
       >
         <a-entity
           id="head"
